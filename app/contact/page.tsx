@@ -1,6 +1,5 @@
 
 import Link from "next/link";
-import { Suspense } from "react";
 import {
   ArrowLeft,
   ArrowUpRight,
@@ -9,6 +8,7 @@ import {
 } from "lucide-react";
 
 import ContactForm from "@/components/contact/contact-form";
+import ContactServiceSelector from "@/components/contact/contact-service-selector";
 
 export const metadata = {
   title: "Contact | Labib Cinecraft",
@@ -16,59 +16,9 @@ export const metadata = {
     "Tell Labib Cinecraft about your photography, cinematography, or wedding film project.",
 };
 
-type ContactPageProps = {
-  searchParams: Promise<{
-    service?: string | string[];
-  }>;
-};
-
-export default function ContactPage(props: ContactPageProps) {
-  return (
-    <Suspense
-      fallback={
-        <main className="min-h-screen bg-[#101010] px-6 py-24 text-[#F2EFE8]">
-          <div className="container-studio">
-            <p className="text-xs tracking-[0.25em] text-[#C5AD86]">
-              LABIB CINECRAFT
-            </p>
-            <p className="mt-8 text-sm text-white/50">
-              Loading contact page...
-            </p>
-          </div>
-        </main>
-      }
-    >
-      <ContactContent searchParams={props.searchParams} />
-    </Suspense>
-  );
-}
-
-async function ContactContent({
-  searchParams,
-}: ContactPageProps) {
-  // Read searchParams inside the Suspense boundary.
-  const { service } = await searchParams;
-
-  const validServices = [
-    "Photography",
-    "Cinematography",
-    "Wedding Films",
-    "Other",
-  ];
-
-  const requestedService = Array.isArray(service)
-    ? service[0]
-    : service;
-
-  const selectedService = validServices.includes(
-    requestedService ?? ""
-  )
-    ? requestedService!
-    : "";
-
+export default function ContactPage() {
   return (
     <main className="min-h-screen bg-[#101010] text-[#F2EFE8]">
-      {/* Header */}
       <header className="border-b border-white/10">
         <div className="container-studio flex min-h-20 items-center justify-between">
           <Link
@@ -88,9 +38,7 @@ async function ContactContent({
         </div>
       </header>
 
-      {/* Main Content */}
       <section className="container-studio grid gap-14 py-16 md:grid-cols-[0.8fr_1.2fr] md:gap-20 md:py-24">
-        {/* Left Side */}
         <div>
           <p className="text-xs tracking-[0.3em] text-[#C5AD86]">
             LET'S CREATE SOMETHING
@@ -99,9 +47,7 @@ async function ContactContent({
           <h1 className="mt-6 font-editorial text-5xl leading-tight sm:text-6xl lg:text-7xl">
             Tell us your
             <br />
-            <span className="italic text-[#C5AD86]">
-              story.
-            </span>
+            <span className="italic text-[#C5AD86]">story.</span>
           </h1>
 
           <p className="mt-6 max-w-md text-sm leading-8 text-white/55">
@@ -151,28 +97,21 @@ async function ContactContent({
           </div>
         </div>
 
-        {/* Right Side: Contact Form */}
         <div className="border border-white/10 bg-white/[0.02] p-5 sm:p-8 lg:p-10">
           <p className="mb-8 text-xs tracking-[0.2em] text-[#C5AD86]">
             PROJECT INQUIRY
           </p>
 
-          <ContactForm
-            key={selectedService}
-            initialService={selectedService}
-          />
+          <ContactServiceSelector />
         </div>
       </section>
 
-     
-{/* Footer */}
-<footer className="border-t border-white/10">
-  <div className="container-studio flex flex-col gap-3 py-6 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
-    <p>© 2026 Labib Cinecraft.</p>
-    <p>Every frame tells a story.</p>
-  </div>
-</footer>
-
+      <footer className="border-t border-white/10">
+        <div className="container-studio flex flex-col gap-3 py-6 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
+          <p>© 2026 Labib Cinecraft.</p>
+          <p>Every frame tells a story.</p>
+        </div>
+      </footer>
     </main>
   );
 }
