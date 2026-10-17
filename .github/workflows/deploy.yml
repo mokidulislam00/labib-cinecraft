@@ -38,6 +38,8 @@ jobs:
 
       - name: Build website
         run: npm run build
+        env:
+          GITHUB_PAGES: "true"
 
       - name: Upload static website
         uses: actions/upload-pages-artifact@v3

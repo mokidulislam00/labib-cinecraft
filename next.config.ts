@@ -1,10 +1,17 @@
 
 import type { NextConfig } from "next";
 
+const isGitHubPages = process.env.GITHUB_PAGES === "true";
+
 const nextConfig: NextConfig = {
-  output: "export",
+  ...(isGitHubPages
+    ? {
+        output: "export" as const,
+        basePath: "/labib-cinecraft",
+      }
+    : {}),
+
   trailingSlash: true,
-  basePath: "/labib-cinecraft",
 
   experimental: {
     agentFeedback: true,
